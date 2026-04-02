@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Formulario de Acceso</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="container">
+    <header class="main-header">
+      <h1>FORMULARIO DE ACCESO</h1>
+    </header>
+
+    <form id="formAcceso" class="card">
+      <!-- DATOS DE SITE -->
+      <section class="section">
+        <div class="section-title with-action site-header">
+          <span>DATOS DE SITE</span>
+
+          <div class="site-search-wrapper">
+            <input
+              type="text"
+              id="buscarRelacion"
+              class="site-search-input"
+              placeholder="Buscar por código único, site o torrera"
+              autocomplete="off"
+            />
+            <div id="searchResults" class="search-results"></div>
+            <small class="hint search-hint">
+              Este campo solo ayuda a autocompletar. No se registra.
+            </small>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="codigoUnico">Código único</label>
+            <input type="text" id="codigoUnico" name="codigoUnico" placeholder="Ingrese código único" />
+          </div>
+
+          <div class="field">
+            <label for="nombreLocal">Nombre del local</label>
+            <input type="text" id="nombreLocal" name="nombreLocal" placeholder="Ingrese nombre del local" />
+          </div>
+
+          <div class="field full-width">
+            <label for="direccion">Dirección</label>
+            <input type="text" id="direccion" name="direccion" placeholder="Ingrese dirección" />
+          </div>
+
+          <div class="field">
+            <label for="ubigeo">Ubigeo</label>
+            <input type="text" id="ubigeo" name="ubigeo" placeholder="Ingrese ubigeo" />
+          </div>
+
+          <div class="field">
+            <label for="tipoLocal">Tipo local</label>
+            <input type="text" id="tipoLocal" name="tipoLocal" placeholder="Ingrese tipo local" />
+          </div>
+
+          <div class="field">
+            <label for="departamento">Departamento</label>
+            <input type="text" id="departamento" name="departamento" placeholder="Ingrese departamento" />
+          </div>
+
+          <div class="field">
+            <label for="provincia">Provincia</label>
+            <input type="text" id="provincia" name="provincia" placeholder="Ingrese provincia" />
+          </div>
+
+          <div class="field">
+            <label for="distrito">Distrito</label>
+            <input type="text" id="distrito" name="distrito" placeholder="Ingrese distrito" />
+          </div>
+        </div>
+      </section>
+
+      <!-- DATOS DEL TRABAJO -->
+      <section class="section">
+        <div class="section-title">DATOS DEL TRABAJO</div>
+
+        <div class="grid-2">
+          <div class="field">
+            <label for="tipoTorrera">Torrera</label>
+            <select id="tipoTorrera" name="tipoTorrera">
+              <option value="">Seleccione una opción</option>
+              <option value="CENS">CENS</option>
+              <option value="CLARO">CLARO</option>
+              <option value="DT/TBS">DT/TBS</option>
+              <option value="ICON TOWER">ICON TOWER</option>
+              <option value="QMC">QMC</option>
+              <option value="SBA">SBA</option>
+              <option value="SITES PERU">SITES PERU</option>
+              <option value="TELECOMMUNICATION PARTNERS">TELECOMMUNICATION PARTNERS</option>
+              <option value="TORRECOM">TORRECOM</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="tipoAcceso">Tipo de acceso</label>
+            <select id="tipoAcceso" name="tipoAcceso">
+              <option value="">Seleccione una opción</option>
+              <option value="MANTENIMIENTO DE EMERGENCIA">MANTENIMIENTO DE EMERGENCIA</option>
+              <option value="MANTENIMIENTO PREVENTIVO">MANTENIMIENTO PREVENTIVO</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="fechaInicio">Fecha inicio</label>
+            <input type="date" id="fechaInicio" name="fechaInicio" />
+          </div>
+
+          <div class="field">
+            <label for="fechaFin">Fecha culminación</label>
+            <input type="date" id="fechaFin" name="fechaFin" />
+          </div>
+
+          <div class="field">
+            <label for="horaIngreso">Hora de ingreso</label>
+            <input
+              type="text"
+              id="horaIngreso"
+              name="horaIngreso"
+              placeholder="HH:MM"
+              maxlength="5"
+              inputmode="numeric"
+              autocomplete="off"
+            />
+            <small class="hint">Formato 24 horas: 00:00 a 23:59</small>
+          </div>
+
+          <div class="field">
+            <label for="horaSalida">Hora de salida</label>
+            <input
+              type="text"
+              id="horaSalida"
+              name="horaSalida"
+              placeholder="HH:MM"
+              maxlength="5"
+              inputmode="numeric"
+              autocomplete="off"
+            />
+            <small class="hint">Formato 24 horas: 00:00 a 23:59</small>
+          </div>
+
+          <div class="field full-width">
+            <label for="archivoPdf">Adjuntar PDF</label>
+            <input type="file" id="archivoPdf" name="archivoPdf" accept="application/pdf" />
+            <small class="hint">Solo se permite archivo PDF.</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- LISTADO DE PERSONAL -->
+      <section class="section">
+        <div class="section-title with-action personal-header">
+          <span>LISTADO DE PERSONAL</span>
+
+          <div class="personal-actions">
+            <button type="button" id="btnDescargarPlantilla" class="btn btn-secondary">
+              Descargar plantilla
+            </button>
+
+            <label for="inputPlantilla" class="btn btn-outline">
+              Cargar plantilla
+            </label>
+            <input type="file" id="inputPlantilla" accept=".xlsx,.xls,.csv" hidden />
+
+            <button type="button" id="btnAgregarFila" class="btn btn-primary">
+              + Agregar fila
+            </button>
+          </div>
+        </div>
+
+        <small class="hint plantilla-hint">
+          La plantilla debe contener 2 columnas: <b>Nombre Funcionario</b> y <b>DNI</b>.
+        </small>
+
+        <div class="table-wrapper">
+          <table id="tablaPersonal">
+            <thead>
+              <tr>
+                <th>NOMBRE FUNCIONARIO</th>
+                <th>DNI</th>
+                <th>ACCIÓN</th>
+              </tr>
+            </thead>
+            <tbody id="tbodyPersonal">
+              <tr>
+                <td>
+                  <input type="text" name="nombreFuncionario[]" placeholder="Ingrese nombre completo" />
+                </td>
+                <td>
+                  <input type="text" name="dni[]" placeholder="Ingrese DNI" maxlength="8" />
+                </td>
+                <td class="text-center">
+                  <button type="button" class="btn btn-danger btnEliminarFila">Eliminar</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <div class="actions">
+        <button type="button" id="btnLimpiar" class="btn btn-secondary">Limpiar</button>
+        <button type="submit" class="btn btn-primary">Guardar</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- POPUP -->
+  <div id="popupExito" class="popup-overlay">
+    <div class="popup-box">
+      <div class="popup-icon">✓</div>
+      <h3>Registro realizado y notificado</h3>
+      <p>La información fue procesada correctamente.</p>
+      <button type="button" id="btnCerrarPopup" class="btn btn-primary">Aceptar</button>
+    </div>
+  </div>
+
+  <!-- LOADER -->
+  <div id="loaderOverlay" class="loader-overlay">
+    <div class="loader-box">
+      <img src="images/movistar.gif" alt="Cargando" class="loader-gif" />
+      <p>Guardando información...</p>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/xlsx/dist/xlsx.full.min.js"></script>
+  <script src="sites-data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
