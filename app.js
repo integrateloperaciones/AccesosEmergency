@@ -117,6 +117,10 @@ function esHoraValida(valor) {
   return /^([01]\d|2[0-3]):([0-5]\d)$/.test(String(valor || "").trim());
 }
 
+function esCorreoValido(valor) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(valor || "").trim());
+}
+
 // =========================
 // DESCARGAR / CARGAR PLANTILLA
 // =========================
@@ -466,6 +470,9 @@ function validarFormulario() {
   const horaIngreso = normalizarHoraFinal(document.getElementById("horaIngreso").value.trim());
   const horaSalida = normalizarHoraFinal(document.getElementById("horaSalida").value.trim());
 
+  const solicitanteNombre = document.getElementById("solicitanteNombre").value.trim();
+  const solicitanteCorreo = document.getElementById("solicitanteCorreo").value.trim();
+
   document.getElementById("horaIngreso").value = horaIngreso;
   document.getElementById("horaSalida").value = horaSalida;
 
@@ -477,6 +484,10 @@ function validarFormulario() {
   if (!horaIngreso) throw new Error("Ingrese la hora de ingreso.");
   if (!esHoraValida(horaIngreso)) throw new Error("La hora de ingreso debe estar entre 00:00 y 23:59.");
   if (horaSalida && !esHoraValida(horaSalida)) throw new Error("La hora de salida debe estar entre 00:00 y 23:59.");
+
+  if (!solicitanteNombre) throw new Error("Ingrese el nombre del solicitante.");
+  if (!solicitanteCorreo) throw new Error("Ingrese el correo del solicitante.");
+  if (!esCorreoValido(solicitanteCorreo)) throw new Error("Ingrese un correo válido para el solicitante.");
 }
 
 async function obtenerDatosFormularioParaEnvio() {
@@ -522,6 +533,10 @@ async function obtenerDatosFormularioParaEnvio() {
       fechaFin: document.getElementById("fechaFin").value,
       horaIngreso: document.getElementById("horaIngreso").value,
       horaSalida: document.getElementById("horaSalida").value
+    },
+    solicitante: {
+      nombre: document.getElementById("solicitanteNombre").value.trim(),
+      correo: document.getElementById("solicitanteCorreo").value.trim()
     },
     archivoPdf,
     listadoPersonal: personal
