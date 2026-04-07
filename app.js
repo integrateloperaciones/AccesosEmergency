@@ -488,6 +488,13 @@ function validarFormulario() {
   if (!solicitanteNombre) throw new Error("Ingrese el nombre del solicitante.");
   if (!solicitanteCorreo) throw new Error("Ingrese el correo del solicitante.");
   if (!esCorreoValido(solicitanteCorreo)) throw new Error("Ingrese un correo válido para el solicitante.");
+
+  const archivos = Array.from(document.getElementById("archivoPdf").files || []);
+  const archivosNoPdf = archivos.filter(archivo => archivo.type !== "application/pdf");
+
+  if (archivosNoPdf.length > 0) {
+    throw new Error("Todos los archivos adjuntos deben ser PDF.");
+  }
 }
 
 async function obtenerDatosFormularioParaEnvio() {
@@ -507,12 +514,14 @@ async function obtenerDatosFormularioParaEnvio() {
   });
 
   const archivoPdfInput = document.getElementById("archivoPdf");
-  const archivo = archivoPdfInput.files[0] || null;
+  const archivos = Array.from(archivoPdfInput.files || []);
 
-  let archivoPdf = null;
+  let archivosPdf = [];
 
-  if (archivo) {
-    archivoPdf = await convertirArchivoABase64(archivo);
+  if (archivos.length > 0) {
+    archivosPdf = await Promise.all(
+      archivos.map((archivo) => convertirArchivoABase64(archivo))
+    );
   }
 
   return {
@@ -538,7 +547,7 @@ async function obtenerDatosFormularioParaEnvio() {
       nombre: document.getElementById("solicitanteNombre").value.trim(),
       correo: document.getElementById("solicitanteCorreo").value.trim()
     },
-    archivoPdf,
+    archivosPdf,
     listadoPersonal: personal
   };
 }
@@ -558,7 +567,7 @@ function convertirArchivoABase64(file) {
       });
     };
 
-    reader.onerror = () => reject(new Error("No se pudo leer el PDF."));
+    reader.onerror = () => reject(new Error("No se pudo leer uno de los PDFs."));
     reader.readAsDataURL(file);
   });
 }
