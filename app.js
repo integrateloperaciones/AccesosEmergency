@@ -18,7 +18,14 @@ const loaderOverlay = document.getElementById("loaderOverlay");
 const horaIngresoInput = document.getElementById("horaIngreso");
 const horaSalidaInput = document.getElementById("horaSalida");
 
+const archivoAdjuntosInput = document.getElementById("archivoAdjuntos");
+const listaAdjuntosSeleccionados = document.getElementById("listaAdjuntosSeleccionados");
+const btnLimpiarAdjuntos = document.getElementById("btnLimpiarAdjuntos");
+
 let guardando = false;
+
+// Lista acumulada de adjuntos SCTR / otros
+let archivosAdjuntosAcumulados = [];
 
 // =========================
 // LISTADO DE PERSONAL
@@ -119,6 +126,106 @@ function esHoraValida(valor) {
 
 function esCorreoValido(valor) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(valor || "").trim());
+}
+
+// =========================
+// ADJUNTOS ACUMULADOS
+// =========================
+inicializarAdjuntosAcumulados();
+
+function inicializarAdjuntosAcumulados() {
+  if (!archivoAdjuntosInput) return;
+
+  archivoAdjuntosInput.addEventListener("change", manejarSeleccionAdjuntos);
+
+  if (btnLimpiarAdjuntos) {
+    btnLimpiarAdjuntos.addEventListener("click", () => {
+      limpiarAdjuntosAcumulados();
+    });
+  }
+
+  if (listaAdjuntosSeleccionados) {
+    listaAdjuntosSeleccionados.addEventListener("click", (e) => {
+      if (e.target.classList.contains("btnEliminarAdjunto")) {
+        const indice = Number(e.target.dataset.index);
+        eliminarAdjuntoAcumulado(indice);
+      }
+    });
+  }
+
+  renderizarListaAdjuntos();
+}
+
+function manejarSeleccionAdjuntos(e) {
+  const nuevosArchivos = Array.from(e.target.files || []);
+
+  if (!nuevosArchivos.length) return;
+
+  nuevosArchivos.forEach((archivo) => {
+    if (!existeArchivoEnLista(archivo, archivosAdjuntosAcumulados)) {
+      archivosAdjuntosAcumulados.push(archivo);
+    }
+  });
+
+  archivoAdjuntosInput.value = "";
+  renderizarListaAdjuntos();
+}
+
+function existeArchivoEnLista(archivo, lista) {
+  return lista.some((item) =>
+    item.name === archivo.name &&
+    item.size === archivo.size &&
+    item.lastModified === archivo.lastModified
+  );
+}
+
+function eliminarAdjuntoAcumulado(indice) {
+  if (indice < 0 || indice >= archivosAdjuntosAcumulados.length) return;
+  archivosAdjuntosAcumulados.splice(indice, 1);
+  renderizarListaAdjuntos();
+}
+
+function limpiarAdjuntosAcumulados() {
+  archivosAdjuntosAcumulados = [];
+  if (archivoAdjuntosInput) {
+    archivoAdjuntosInput.value = "";
+  }
+  renderizarListaAdjuntos();
+}
+
+function renderizarListaAdjuntos() {
+  if (!listaAdjuntosSeleccionados) return;
+
+  if (!archivosAdjuntosAcumulados.length) {
+    listaAdjuntosSeleccionados.innerHTML = "No hay archivos agregados.";
+    listaAdjuntosSeleccionados.classList.add("adjuntos-vacia");
+    return;
+  }
+
+  listaAdjuntosSeleccionados.classList.remove("adjuntos-vacia");
+  listaAdjuntosSeleccionados.innerHTML = archivosAdjuntosAcumulados
+    .map((archivo, index) => `
+      <div class="adjunto-item">
+        <div class="adjunto-info">
+          <div class="adjunto-nombre" title="${escapeHtml(archivo.name)}">${escapeHtml(archivo.name)}</div>
+          <div class="adjunto-size">${formatearBytes(archivo.size)}</div>
+        </div>
+        <button type="button" class="btn btn-danger btn-sm btnEliminarAdjunto" data-index="${index}">
+          Eliminar
+        </button>
+      </div>
+    `)
+    .join("");
+}
+
+function formatearBytes(bytes) {
+  const valor = Number(bytes || 0);
+
+  if (valor < 1024) return `${valor} B`;
+  if (valor < 1024 * 1024) return `${(valor / 1024).toFixed(1)} KB`;
+  if (valor < 1024 * 1024 * 1024) return `${(valor / (1024 * 1024)).toFixed(1)} MB`;
+
+  return `${(valor / (1024 * 1024 * 1024)).toFixed(1)} GB`;
 }
 
 // =========================
@@ -344,6 +451,8 @@ function limpiarFormulario() {
   if (horaIngresoInput) horaIngresoInput.value = "";
   if (horaSalidaInput) horaSalidaInput.value = "";
 
+  limpiarAdjuntosAcumulados();
+
   tbodyPersonal.innerHTML = `
     <tr>
       <td>
@@ -473,8 +582,6 @@ function validarFormulario() {
   const solicitanteNombre = document.getElementById("solicitanteNombre").value.trim();
   const solicitanteCorreo = document.getElementById("solicitanteCorreo").value.trim();
 
-  const archivoAdjuntosInput = document.getElementById("archivoAdjuntos");
-
   document.getElementById("horaIngreso").value = horaIngreso;
   document.getElementById("horaSalida").value = horaSalida;
 
@@ -491,7 +598,7 @@ function validarFormulario() {
   if (!solicitanteCorreo) throw new Error("Ingrese el correo del solicitante.");
   if (!esCorreoValido(solicitanteCorreo)) throw new Error("Ingrese un correo válido para el solicitante.");
 
-  if (!archivoAdjuntosInput || !archivoAdjuntosInput.files || archivoAdjuntosInput.files.length === 0) {
+  if (!archivosAdjuntosAcumulados || archivosAdjuntosAcumulados.length === 0) {
     throw new Error("Debe adjuntar como mínimo un archivo en SCTR / otros.");
   }
 }
@@ -512,10 +619,9 @@ async function obtenerDatosFormularioParaEnvio() {
     }
   });
 
-  const archivoAdjuntosInput = document.getElementById("archivoAdjuntos");
   const imagenesAntecedentesInput = document.getElementById("imagenesAntecedentes");
 
-  const archivosAdjuntos = Array.from(archivoAdjuntosInput.files || []);
+  const archivosAdjuntos = [...archivosAdjuntosAcumulados];
   const imagenesAntecedentes = Array.from(imagenesAntecedentesInput.files || []);
 
   let adjuntos = [];
