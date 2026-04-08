@@ -201,6 +201,64 @@ body {
   line-height: 1.4;
 }
 
+.adjuntos-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.adjuntos-toolbar input[type="file"] {
+  flex: 1;
+  min-width: 260px;
+}
+
+.adjuntos-lista {
+  margin-top: 10px;
+  border: 1px solid #d8e0ec;
+  border-radius: 10px;
+  background: #f8fbff;
+  padding: 10px;
+}
+
+.adjuntos-vacia {
+  color: #6c7a89;
+  font-size: 14px;
+}
+
+.adjunto-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  background: #fff;
+  border: 1px solid #e4ebf5;
+  border-radius: 8px;
+}
+
+.adjunto-item + .adjunto-item {
+  margin-top: 8px;
+}
+
+.adjunto-info {
+  min-width: 0;
+  flex: 1;
+}
+
+.adjunto-nombre {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1f2d3d;
+  word-break: break-word;
+}
+
+.adjunto-size {
+  font-size: 12px;
+  color: #6c7a89;
+  margin-top: 3px;
+}
+
 .table-wrapper {
   overflow-x: auto;
 }
@@ -277,6 +335,25 @@ tbody td input {
   color: #fff;
 }
 
+.btn-outline {
+  background: #ffffff;
+  color: #1f5fd2;
+  border: 1px solid #1f5fd2;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-outline:hover {
+  background: #f3f7ff;
+}
+
+.btn-sm {
+  padding: 8px 12px;
+  font-size: 13px;
+}
+
 .personal-header {
   display: flex;
   justify-content: space-between;
@@ -290,20 +367,6 @@ tbody td input {
   gap: 10px;
   align-items: center;
   flex-wrap: wrap;
-}
-
-.btn-outline {
-  background: #ffffff;
-  color: #1f5fd2;
-  border: 1px solid #1f5fd2;
-  text-decoration: none;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.btn-outline:hover {
-  background: #f3f7ff;
 }
 
 .plantilla-hint {
@@ -439,5 +502,19 @@ tbody td input {
 
   .actions {
     justify-content: center;
+  }
+
+  .adjunto-item {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .adjuntos-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .adjuntos-toolbar input[type="file"] {
+    min-width: 100%;
   }
 }
