@@ -488,13 +488,6 @@ function validarFormulario() {
   if (!solicitanteNombre) throw new Error("Ingrese el nombre del solicitante.");
   if (!solicitanteCorreo) throw new Error("Ingrese el correo del solicitante.");
   if (!esCorreoValido(solicitanteCorreo)) throw new Error("Ingrese un correo válido para el solicitante.");
-
-  const archivos = Array.from(document.getElementById("archivoPdf").files || []);
-  const archivosNoPdf = archivos.filter(archivo => archivo.type !== "application/pdf");
-
-  if (archivosNoPdf.length > 0) {
-    throw new Error("Todos los archivos adjuntos deben ser PDF.");
-  }
 }
 
 async function obtenerDatosFormularioParaEnvio() {
@@ -513,14 +506,29 @@ async function obtenerDatosFormularioParaEnvio() {
     }
   });
 
-  const archivoPdfInput = document.getElementById("archivoPdf");
-  const archivos = Array.from(archivoPdfInput.files || []);
+  const archivoAdjuntosInput = document.getElementById("archivoAdjuntos");
+  const imagenesAntecedentesInput = document.getElementById("imagenesAntecedentes");
 
-  let archivosPdf = [];
+  const archivosAdjuntos = Array.from(archivoAdjuntosInput.files || []);
+  const imagenesAntecedentes = Array.from(imagenesAntecedentesInput.files || []);
 
-  if (archivos.length > 0) {
-    archivosPdf = await Promise.all(
-      archivos.map((archivo) => convertirArchivoABase64(archivo))
+  let adjuntos = [];
+  let imagenes = [];
+
+  if (archivosAdjuntos.length > 0) {
+    adjuntos = await Promise.all(
+      archivosAdjuntos.map((archivo) => convertirArchivoABase64(archivo))
+    );
+  }
+
+  if (imagenesAntecedentes.length > 0) {
+    const noImagenes = imagenesAntecedentes.filter((archivo) => !String(archivo.type || "").startsWith("image/"));
+    if (noImagenes.length > 0) {
+      throw new Error("En Alarma / pruebas / antecedentes solo se permiten imágenes.");
+    }
+
+    imagenes = await Promise.all(
+      imagenesAntecedentes.map((archivo) => convertirArchivoABase64(archivo))
     );
   }
 
@@ -545,9 +553,12 @@ async function obtenerDatosFormularioParaEnvio() {
     },
     solicitante: {
       nombre: document.getElementById("solicitanteNombre").value.trim(),
-      correo: document.getElementById("solicitanteCorreo").value.trim()
+      correo: document.getElementById("solicitanteCorreo").value.trim(),
+      flm: document.getElementById("flm").value.trim(),
+      comentario: document.getElementById("comentario").value.trim()
     },
-    archivosPdf,
+    adjuntos,
+    imagenes,
     listadoPersonal: personal
   };
 }
@@ -567,7 +578,7 @@ function convertirArchivoABase64(file) {
       });
     };
 
-    reader.onerror = () => reject(new Error("No se pudo leer uno de los PDFs."));
+    reader.onerror = () => reject(new Error("No se pudo leer uno de los archivos."));
     reader.readAsDataURL(file);
   });
 }
