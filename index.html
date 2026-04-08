@@ -256,15 +256,25 @@
 
           <div class="field full-width">
             <label for="archivoAdjuntos">Adjuntos (SCTR,otros)</label>
-            <input
-              type="file"
-              id="archivoAdjuntos"
-              name="archivoAdjuntos"
-              multiple
-              required
-            />
+
+            <div class="adjuntos-toolbar">
+              <input
+                type="file"
+                id="archivoAdjuntos"
+                name="archivoAdjuntos"
+                multiple
+              />
+              <button type="button" id="btnLimpiarAdjuntos" class="btn btn-outline btn-sm">
+                Limpiar adjuntos
+              </button>
+            </div>
+
+            <div id="listaAdjuntosSeleccionados" class="adjuntos-lista adjuntos-vacia">
+              No hay archivos agregados.
+            </div>
+
             <small class="hint">
-              Debe seleccionar como mínimo un archivo. Puede adjuntar uno o varios archivos de cualquier tipo.
+              Puede agregar archivos uno por uno o varios a la vez. Los archivos se irán acumulando hasta que los elimine o limpie la lista.
             </small>
           </div>
         </div>
