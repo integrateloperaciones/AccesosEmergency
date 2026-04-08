@@ -36,42 +36,90 @@
         <div class="grid-2">
           <div class="field">
             <label for="codigoUnico">Código único</label>
-            <input type="text" id="codigoUnico" name="codigoUnico" placeholder="Ingrese código único" />
+            <input
+              type="text"
+              id="codigoUnico"
+              name="codigoUnico"
+              placeholder="Ingrese código único"
+              readonly
+            />
           </div>
 
           <div class="field">
             <label for="nombreLocal">Nombre del local</label>
-            <input type="text" id="nombreLocal" name="nombreLocal" placeholder="Ingrese nombre del local" />
+            <input
+              type="text"
+              id="nombreLocal"
+              name="nombreLocal"
+              placeholder="Ingrese nombre del local"
+              readonly
+            />
           </div>
 
           <div class="field full-width">
             <label for="direccion">Dirección</label>
-            <input type="text" id="direccion" name="direccion" placeholder="Ingrese dirección" />
+            <input
+              type="text"
+              id="direccion"
+              name="direccion"
+              placeholder="Ingrese dirección"
+              readonly
+            />
           </div>
 
           <div class="field">
             <label for="ubigeo">Ubigeo</label>
-            <input type="text" id="ubigeo" name="ubigeo" placeholder="Ingrese ubigeo" />
+            <input
+              type="text"
+              id="ubigeo"
+              name="ubigeo"
+              placeholder="Ingrese ubigeo"
+              readonly
+            />
           </div>
 
           <div class="field">
             <label for="tipoLocal">Tipo local</label>
-            <input type="text" id="tipoLocal" name="tipoLocal" placeholder="Ingrese tipo local" />
+            <input
+              type="text"
+              id="tipoLocal"
+              name="tipoLocal"
+              placeholder="Ingrese tipo local"
+              readonly
+            />
           </div>
 
           <div class="field">
             <label for="departamento">Departamento</label>
-            <input type="text" id="departamento" name="departamento" placeholder="Ingrese departamento" />
+            <input
+              type="text"
+              id="departamento"
+              name="departamento"
+              placeholder="Ingrese departamento"
+              readonly
+            />
           </div>
 
           <div class="field">
             <label for="provincia">Provincia</label>
-            <input type="text" id="provincia" name="provincia" placeholder="Ingrese provincia" />
+            <input
+              type="text"
+              id="provincia"
+              name="provincia"
+              placeholder="Ingrese provincia"
+              readonly
+            />
           </div>
 
           <div class="field">
             <label for="distrito">Distrito</label>
-            <input type="text" id="distrito" name="distrito" placeholder="Ingrese distrito" />
+            <input
+              type="text"
+              id="distrito"
+              name="distrito"
+              placeholder="Ingrese distrito"
+              readonly
+            />
           </div>
         </div>
       </section>
@@ -94,6 +142,8 @@
               <option value="SITES PERU">SITES PERU</option>
               <option value="TELECOMMUNICATION PARTNERS">TELECOMMUNICATION PARTNERS</option>
               <option value="TORRECOM">TORRECOM</option>
+              <option value="ATP">ATP</option>
+              <option value="INTEGRATEL">INTEGRATEL</option>
             </select>
           </div>
 
@@ -170,10 +220,51 @@
             />
           </div>
 
+          <div class="field">
+            <label for="flm">FLM</label>
+            <select id="flm" name="flm">
+              <option value="">Seleccione una opción</option>
+              <option value="HUAWEI">HUAWEI</option>
+              <option value="COMFICA">COMFICA</option>
+            </select>
+          </div>
+
+          <div class="field">
+            <label for="comentario">Comentario</label>
+            <textarea
+              id="comentario"
+              name="comentario"
+              rows="3"
+              placeholder="Ingrese comentario"
+              class="textarea-field"
+            ></textarea>
+          </div>
+
           <div class="field full-width">
-            <label for="archivoPdf">Adjuntar PDF(s)</label>
-            <input type="file" id="archivoPdf" name="archivoPdf" accept="application/pdf" multiple />
-            <small class="hint">Puede seleccionar uno o varios archivos PDF.</small>
+            <label for="imagenesAntecedentes">Alarma / pruebas / antecedentes</label>
+            <input
+              type="file"
+              id="imagenesAntecedentes"
+              name="imagenesAntecedentes"
+              accept="image/*"
+              multiple
+            />
+            <small class="hint">
+              Puede seleccionar una o varias imágenes. Estas se mostrarán dentro del cuerpo del correo.
+            </small>
+          </div>
+
+          <div class="field full-width">
+            <label for="archivoAdjuntos">Adjuntos</label>
+            <input
+              type="file"
+              id="archivoAdjuntos"
+              name="archivoAdjuntos"
+              multiple
+            />
+            <small class="hint">
+              Puede seleccionar uno o varios archivos de cualquier tipo.
+            </small>
           </div>
         </div>
       </section>
@@ -231,7 +322,7 @@
 
       <div class="actions">
         <button type="button" id="btnLimpiar" class="btn btn-secondary">Limpiar</button>
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="submit" class="btn btn-primary">Solicitar</button>
       </div>
     </form>
   </div>
