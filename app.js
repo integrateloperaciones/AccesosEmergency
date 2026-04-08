@@ -473,6 +473,8 @@ function validarFormulario() {
   const solicitanteNombre = document.getElementById("solicitanteNombre").value.trim();
   const solicitanteCorreo = document.getElementById("solicitanteCorreo").value.trim();
 
+  const archivoAdjuntosInput = document.getElementById("archivoAdjuntos");
+
   document.getElementById("horaIngreso").value = horaIngreso;
   document.getElementById("horaSalida").value = horaSalida;
 
@@ -488,6 +490,10 @@ function validarFormulario() {
   if (!solicitanteNombre) throw new Error("Ingrese el nombre del solicitante.");
   if (!solicitanteCorreo) throw new Error("Ingrese el correo del solicitante.");
   if (!esCorreoValido(solicitanteCorreo)) throw new Error("Ingrese un correo válido para el solicitante.");
+
+  if (!archivoAdjuntosInput || !archivoAdjuntosInput.files || archivoAdjuntosInput.files.length === 0) {
+    throw new Error("Debe adjuntar como mínimo un archivo en SCTR / otros.");
+  }
 }
 
 async function obtenerDatosFormularioParaEnvio() {
